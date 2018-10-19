@@ -1,0 +1,11 @@
+defmodule ZkPortalWeb.Router do
+  use ZkPortalWeb, :router
+
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
+  scope "/api", ZkPortalWeb do
+    pipe_through :api
+  end
+end
