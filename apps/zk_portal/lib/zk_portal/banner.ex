@@ -18,7 +18,7 @@ defmodule ZkPortal.Banner do
         field :end_date, :date
         field :url, :string, size: 1024
         field :weight, :integer, null: false, default: 10
-        has_one :image, ZkPortal.Image
+        belongs_to :image, ZkPortal.Image
         timestamps()
     end
 end

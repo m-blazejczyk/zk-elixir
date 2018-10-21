@@ -13,7 +13,7 @@ defmodule ZkPortal.Image do
         field :file, :string, null: false, size: 40
         field :width, :integer, null: false
         field :height, :integer, null: false
-        belongs_to :banner, ZkPortal.Banner
+        has_one :banner, ZkPortal.Banner
         timestamps()
     end
 end
