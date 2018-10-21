@@ -6,7 +6,9 @@ defmodule ZkPortal do
   Contexts are also responsible for managing your data, regardless
   if it comes from the database, an external API or others.
   """
-  @repo Repo
+  alias ZkPortal.Banner
+
+  @repo ZkPortal.Repo
 
   def list_banners do
     @repo.all(Banner)
