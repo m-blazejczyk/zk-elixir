@@ -5,7 +5,11 @@ defmodule ZkPortalWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", ZkPortalWeb do
+  scope "/", ZkPortalWeb do
     pipe_through :api
+
+    delete "banners/:id", BannerController, :delete
+    post "banners/new", BannerController, :new
+    get "banners", BannerController, :all
   end
 end
