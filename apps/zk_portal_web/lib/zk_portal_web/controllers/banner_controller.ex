@@ -1,6 +1,8 @@
 defmodule ZkPortalWeb.BannerController do
   use ZkPortalWeb, :controller
 
+  import Plug.Conn;
+
   def all(conn, _params) do
     banners = ZkPortal.list_banners
     render conn, "banners.all.json", banners: banners
@@ -17,12 +19,12 @@ defmodule ZkPortalWeb.BannerController do
       {iid, _} ->
         case ZkPortal.delete_banner(%ZkPortal.Banner{id: iid}) do
           {:ok, _} ->
-            Plug.Conn.send_resp(conn, :ok, "")
+            conn |> send_resp(:ok, "")
           {:error, _} ->
-            Plug.Conn.put_status(conn, :bad_request)
+            conn |> put_status(:bad_request)
         end        
       :error ->
-        Plug.Conn.put_status(conn, :bad_request)
+        conn |> put_status(:bad_request)
     end
   end
 end
