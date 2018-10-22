@@ -11,7 +11,18 @@ defmodule ZkPortalWeb.BannerController do
     render conn, "banner.new.json", banner: banner
   end
 
-  def delete(_conn, %{"id" => id}) do
-    ZkPortal.delete_banner(%ZkPortal.Banner{id: id})
+  # See https://hexdocs.pm/plug/Plug.Conn.Status.html
+  def delete(conn, %{"id" => id}) do
+    case Integer.parse(id) do
+      {iid, _} ->
+        case ZkPortal.delete_banner(%ZkPortal.Banner{id: iid}) do
+          {:ok, _} ->
+            Plug.Conn.send_resp(conn, :ok, "")
+          {:error, _} ->
+            Plug.Conn.put_status(conn, :bad_request)
+        end        
+      :error ->
+        Plug.Conn.put_status(conn, :bad_request)
+    end
   end
 end

@@ -8,17 +8,32 @@ defmodule ZkPortalWeb.BannerView do
     banner_json(banner)
   end
 
-  def banner_json(banner) do
+  defp banner_json(banner) do
+    Map.merge(
+      %{
+        id: banner.id,
+        isSilent: banner.is_silent,
+        startDate: banner.start_date,
+        endDate: banner.end_date,
+        url: banner.url,
+        weight: banner.weight
+      },
+      image_json(banner.image)
+    )
+  end
+
+  defp image_json(%ZkPortal.Image{} = image) do
     %{
-      id: banner.id,
-      isSilent: banner.is_silent,
-      startDate: banner.start_date,
-      endDate: banner.end_date,
-      url: banner.url,
-      weight: banner.weight,
-      imageUrl: banner.image.file,
-      imageHeight: banner.image.height,
-      imageWidth: banner.image.width
+      imageUrl: image.file,
+      imageHeight: image.height,
+      imageWidth: image.width
+    }
+  end
+  defp image_json(_anything) do
+    %{
+      imageUrl: nil,
+      imageHeight: nil,
+      imageWidth: nil
     }
   end
 end

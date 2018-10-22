@@ -8,8 +8,8 @@ defmodule ZkPortalWeb.Router do
   scope "/", ZkPortalWeb do
     pipe_through :api
 
-    delete "banners/:id", BannerController, :delete
-    post "banners/new", BannerController, :new
-    get "banners", BannerController, :all
+    delete "/banners/:id", BannerController, :delete
+    post "/banners/new", BannerController, :new
+    get "/banners", BannerController, :all
   end
 end

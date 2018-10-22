@@ -18,7 +18,7 @@ defmodule ZkPortal do
   end
 
   def new_banner do
-    @repo.insert(%Banner{})
+    @repo.insert!(%Banner{})
   end
 
   def delete_banner(%Banner{} = banner), do: @repo.delete(banner)
