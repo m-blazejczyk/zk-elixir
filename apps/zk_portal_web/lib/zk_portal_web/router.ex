@@ -11,5 +11,6 @@ defmodule ZkPortalWeb.Router do
     delete "/banners/:id", BannerController, :delete
     post "/banners/new", BannerController, :new
     get "/banners", BannerController, :all
+    post "/banners/:id/update", BannerController, :update
   end
 end

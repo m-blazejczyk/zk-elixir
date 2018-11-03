@@ -1,5 +1,6 @@
 defmodule ZkPortalWeb.BannerController do
   use ZkPortalWeb, :controller
+  use Params
 
   import Plug.Conn;
 
@@ -21,10 +22,35 @@ defmodule ZkPortalWeb.BannerController do
           {:ok, _} ->
             conn |> send_resp(:ok, "")
           {:error, _} ->
-            conn |> put_status(:bad_request)
+            conn |> send_resp(:bad_request, "")
         end        
       :error ->
-        conn |> put_status(:bad_request)
+        conn |> send_resp(:bad_request, "")
+    end
+  end
+
+  # See https://github.com/vic/params
+  defparams update_params %{
+    id!: :integer,     # required
+    is_silent: :boolean,  # accepts lowercase values true and false
+    start_date: :date,
+    endDate: :date,
+    url: :string,
+    weight: :integer
+  }
+
+  def update(conn, params) do
+    changeset = update_params(params)
+    if changeset.valid? do
+      validated_params = Params.to_map changeset
+      case ZkPortal.update_banner(%ZkPortal.Banner{id: validated_params.id}, validated_params) do
+        {:ok, _} ->
+          conn |> send_resp(:ok, "")
+        {:error, _} ->
+          conn |> send_resp(:bad_request, "")
+      end
+    else
+      conn |> send_resp(:bad_request, "")
     end
   end
 end

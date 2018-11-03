@@ -43,7 +43,8 @@ defmodule ZkPortalWeb.Mixfile do
       {:gettext, "~> 0.11"},
       {:zk_portal, in_umbrella: true},
       {:cowboy, "~> 1.0"},
-      {:cors_plug, "~> 1.5"}
+      {:cors_plug, "~> 1.5"},
+      {:params, "~> 2.0"}
     ]
   end
 

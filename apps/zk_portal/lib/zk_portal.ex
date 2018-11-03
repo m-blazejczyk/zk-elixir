@@ -22,4 +22,10 @@ defmodule ZkPortal do
   end
 
   def delete_banner(%Banner{} = banner), do: @repo.delete(banner)
+
+  def update_banner(%Banner{} = banner, updates) do
+    banner
+      |> Banner.changeset(updates)
+      |> @repo.update()
+  end
 end
