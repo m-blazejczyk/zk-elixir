@@ -5,6 +5,12 @@ defmodule ZkPortalWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/auth/login", ZkPortalWeb do
+    pipe_through :api
+
+    post "/", LoginController, :login
+  end
+
   scope "/", ZkPortalWeb do
     pipe_through :api
 
