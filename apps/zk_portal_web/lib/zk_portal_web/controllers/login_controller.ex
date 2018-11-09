@@ -2,13 +2,16 @@ defmodule ZkPortalWeb.LoginController do
   use ZkPortalWeb, :controller
 
   alias ZkPortalWeb.LoginInfo;
+  alias ZkPortalWeb.LoginRegistry;
 
   import Plug.Conn;
 
   def login(conn, %{"user" => user_name, "password" => password}) do
     user = LoginInfo.find_user(user_name, password)
     if user do
-      render conn, "user.json", user: user, token: new_token()
+      token = new_token()
+      LoginRegistry.login({token, user})
+      render conn, "user.json", user: user, token: token
     else
       conn |> send_resp(:unauthorized, "")
     end

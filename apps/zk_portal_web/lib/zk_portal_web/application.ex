@@ -8,6 +8,7 @@ defmodule ZkPortalWeb.Application do
     children = [
       # Start the endpoint when the application starts
       supervisor(ZkPortalWeb.Endpoint, []),
+      supervisor(ZkPortalWeb.LoginRegistry.Supervisor, [])
       # Start your own worker by calling: ZkPortalWeb.Worker.start_link(arg1, arg2, arg3)
       # worker(ZkPortalWeb.Worker, [arg1, arg2, arg3]),
     ]

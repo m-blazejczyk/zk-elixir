@@ -7,12 +7,12 @@ defmodule ZkPortalWeb.LoginRegistry do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 
-  def login(server, data) do
-    GenServer.cast(server, {:login, data})
+  def login(data) do
+    GenServer.cast(__MODULE__, {:login, data})
   end
 
-  def verify(server, token) do
-    GenServer.call(server, {:verify, token})
+  def verify(token) do
+    GenServer.call(__MODULE__, {:verify, token})
   end
 
   ## Server Callbacks
@@ -44,5 +44,21 @@ defmodule ZkPortalWeb.LoginRegistry do
         nil
     end
     {:reply, ret_value, registry}
+  end
+end
+
+defmodule ZkPortalWeb.LoginRegistry.Supervisor do
+  use Supervisor
+
+  def start_link do
+    Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
+  end
+
+  def init(:ok) do
+    children = [
+      worker(ZkPortalWeb.LoginRegistry, [[name: ZkPortalWeb.LoginRegistry]])
+    ]
+
+    supervise(children, strategy: :one_for_one)
   end
 end
