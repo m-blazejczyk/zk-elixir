@@ -47,6 +47,7 @@ defmodule ZkPortalWeb.LoginRegistry do
   end
 end
 
+# Based on https://robots.thoughtbot.com/make-phoenix-even-faster-with-a-genserver-backed-key-value-store
 defmodule ZkPortalWeb.LoginRegistry.Supervisor do
   use Supervisor
 
