@@ -5,6 +5,10 @@ defmodule ZkPortalWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :login_check do
+    plug ZkPortalWeb.LoginCheckPlug
+  end
+
   scope "/auth/login", ZkPortalWeb do
     pipe_through :api
 
@@ -12,7 +16,7 @@ defmodule ZkPortalWeb.Router do
   end
 
   scope "/", ZkPortalWeb do
-    pipe_through :api
+    pipe_through [:api, :login_check]
 
     delete "/banners/:id", BannerController, :delete
     post "/banners/new", BannerController, :new

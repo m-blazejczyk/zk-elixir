@@ -39,9 +39,9 @@ defmodule ZkPortalWeb.LoginRegistry do
   def handle_call({:verify, token}, _from, registry) do
     ret_value = case Map.fetch(registry, token) do
       {:ok, {user, _expiration_time}} ->
-        user
+        {:ok, user}
       _ ->
-        nil
+        :error
     end
     {:reply, ret_value, registry}
   end
