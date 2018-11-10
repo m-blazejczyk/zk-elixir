@@ -16,7 +16,7 @@ defmodule ZkPortalWeb.LoginRegistry do
   end
 
   ## Server Callbacks
-  # Server data is %{token => {user, expiration_time}}
+  # Server data is %{token => {user, login_time}}
 
   def init(:ok) do
     {:ok, %{}}
@@ -25,25 +25,28 @@ defmodule ZkPortalWeb.LoginRegistry do
   def handle_cast({:login, {token, user}}, registry) do
     {_, updated_registry} = Map.get_and_update(registry, token, fn old_data ->
       case old_data do
-        {old_user, expiration_time} ->
+        {old_user, _login_time} ->
           # The user has previously logged in.  Update the expiration time.
-          {old_data, {old_user, expiration_time}} # return the same thing for now
+          {old_data, {old_user, Date.utc_today()}}
         nil ->
           # Add the user to the registry.
-          {old_data, {user, "fake time"}}
+          {old_data, {user, Date.utc_today()}}
       end
     end )
     {:noreply, updated_registry}
   end
 
   def handle_call({:verify, token}, _from, registry) do
-    ret_value = case Map.fetch(registry, token) do
-      {:ok, {user, _expiration_time}} ->
-        {:ok, user}
+    case Map.fetch(registry, token) do
+      {:ok, {user, login_time}} ->
+        if Date.diff(Date.utc_today(), login_time) < 14 do
+          {:reply, {:ok, user}, registry}
+        else
+          {:reply, :error, registry |> Map.delete(token)}
+        end
       _ ->
-        :error
+        {:reply, :error, registry}
     end
-    {:reply, ret_value, registry}
   end
 end
 
