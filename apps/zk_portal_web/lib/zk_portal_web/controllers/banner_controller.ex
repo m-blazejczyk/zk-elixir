@@ -28,6 +28,9 @@ defmodule ZkPortalWeb.BannerController do
         conn |> send_resp(:bad_request, "")
     end
   end
+  def delete(conn, _) do
+    conn |> send_resp(:bad_request, "")
+  end
 
   # See https://github.com/vic/params
   defparams update_params %{
@@ -51,6 +54,36 @@ defmodule ZkPortalWeb.BannerController do
       end
     else
       conn |> send_resp(:bad_request, "")
+    end
+  end
+
+  # %{
+  #   "SelectedFile" => %Plug.Upload{
+  #     content_type: "image/png",
+  #     filename: "test-png-200.png",
+  #     path: "/var/folders/yv/crg89_ss0j95kdgny8cn2_2h0000gn/T//plug-1541/multipart-1541902317-524669662203582-1"
+  #   },
+  #   "id" => "1"
+  # }
+  def upload(conn, %{"id" => id, "SelectedFile" => upload}) do
+    with %Plug.Upload{content_type: content_type, path: path} <- upload,
+         {:ok, file_type} <- verify_file_type(content_type),
+         {iid, _} <- Integer.parse(id)
+    do
+      conn |> send_resp(:ok, "")
+    else
+      _ -> conn |> send_resp(:bad_request, "")
+    end
+  end
+  def upload(conn, _) do
+    conn |> send_resp(:bad_request, "")
+  end
+
+  defp verify_file_type(content_type) do
+    cond do
+      content_type == "image/png" -> {:ok, :png}
+      content_type == "image/jpeg" -> {:ok, :jpg}
+      true -> :error
     end
   end
 end

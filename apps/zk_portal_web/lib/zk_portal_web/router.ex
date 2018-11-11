@@ -22,5 +22,6 @@ defmodule ZkPortalWeb.Router do
     post "/banners/new", BannerController, :new
     get "/banners", BannerController, :all
     post "/banners/:id/update", BannerController, :update
+    post "/banners/:id/upload", BannerController, :upload
   end
 end
