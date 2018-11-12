@@ -44,7 +44,8 @@ defmodule ZkPortalWeb.Mixfile do
       {:zk_portal, in_umbrella: true},
       {:cowboy, "~> 1.0"},
       {:cors_plug, "~> 1.5"},
-      {:params, "~> 2.0"}
+      {:params, "~> 2.0"},
+      {:mogrify, "~> 0.6"}
     ]
   end
 

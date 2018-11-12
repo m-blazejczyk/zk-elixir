@@ -73,6 +73,7 @@ defmodule ZkPortalWeb.BannerController do
          :ok <- File.rename(path, fwf)
     do
       IO.inspect fwf, label: "Uploaded file"
+      img = resize_image(fwf, 200, 10000)
       conn |> send_resp(:ok, "")
     else
       # Problem with File.rename
@@ -102,5 +103,13 @@ defmodule ZkPortalWeb.BannerController do
     filename = filename_bytes |> Base.url_encode64(padding: false)
     folder = folder_byte |> div(16) |> Integer.to_string(16) |> String.downcase
     "static/upload/" <> folder <> "/" <> filename <> (if file_type == :png, do: ".png", else: ".jpg")
+  end
+
+  # Return Mogrify.Image with 'width' and 'height' set.
+  def resize_image(imagePath, width, height) do
+    Mogrify.open(imagePath)
+    |> Mogrify.resize_to_limit(~s(#{width}x#{height}))
+    |> Mogrify.save(in_place: true)
+    |> Mogrify.verbose()
   end
 end
