@@ -21,7 +21,6 @@ defmodule ZkPortalWeb.LoginController do
   end
 
   defp new_token do
-    length = 24
-    :crypto.strong_rand_bytes(length) |> Base.url_encode64 |> binary_part(0, length)
+    :crypto.strong_rand_bytes(20) |> Base.url_encode64
   end
 end

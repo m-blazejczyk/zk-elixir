@@ -68,11 +68,21 @@ defmodule ZkPortalWeb.BannerController do
   def upload(conn, %{"id" => id, "SelectedFile" => upload}) do
     with %Plug.Upload{content_type: content_type, path: path} <- upload,
          {:ok, file_type} <- verify_file_type(content_type),
-         {iid, _} <- Integer.parse(id)
+         {iid, _} <- Integer.parse(id),
+         fwf <- random_filename_with_folder(file_type),
+         :ok <- File.rename(path, fwf)
     do
+      IO.inspect fwf, label: "Uploaded file"
       conn |> send_resp(:ok, "")
     else
-      _ -> conn |> send_resp(:bad_request, "")
+      # Problem with File.rename
+      {:error, error} ->
+        IO.inspect(error, label: "Upload problem (File.rename)")
+        conn |> send_resp(:internal_server_error, "")
+      # All other problems
+      anything_else ->
+        IO.inspect anything_else, label: "Upload problem"
+        conn |> send_resp(:bad_request, "")
     end
   end
   def upload(conn, _) do
@@ -85,5 +95,12 @@ defmodule ZkPortalWeb.BannerController do
       content_type == "image/jpeg" -> {:ok, :jpg}
       true -> :error
     end
+  end
+
+  defp random_filename_with_folder(file_type) do
+    <<folder_byte, filename_bytes :: binary>> = :crypto.strong_rand_bytes(20)
+    filename = filename_bytes |> Base.url_encode64(padding: false)
+    folder = folder_byte |> div(16) |> Integer.to_string(16) |> String.downcase
+    "static/upload/" <> folder <> "/" <> filename <> (if file_type == :png, do: ".png", else: ".jpg")
   end
 end
