@@ -37,7 +37,7 @@ defmodule ZkPortal do
     do
       # Delete the old image from DB and file but only if it existed.
       if old_img do
-        File.rm(Image.full_path(old_img.file))
+        File.rm(Image.full_path(old_img))
         @repo.delete(old_img)
         :ok
       else
