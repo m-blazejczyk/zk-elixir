@@ -70,7 +70,7 @@ defmodule ZkPortalWeb.BannerController do
          {:ok, file_type} <- verify_file_type(content_type),
          {iid, _} <- Integer.parse(id),
          fwf <- random_filename_with_folder(file_type),
-         full_path <- "static/upload/" <> fwf,
+         full_path <- ZkPortal.Image.full_path(fwf),
          :ok <- File.rename(path, full_path),
          img <- resize_image(full_path, 200, 10000),
          :ok <- ZkPortal.update_image_in_banner(iid, %ZkPortal.Image{file: fwf, width: img.width, height: img.height})

@@ -18,4 +18,8 @@ defmodule ZkPortal.Image do
       |> validate_number(:width, greater_than: 0, less_than: 2000)
       |> validate_number(:height, greater_than: 0, less_than: 2000)
   end
+
+  def full_path(file_from_db) do
+    "static/upload/" <> file_from_db
+  end
 end

@@ -29,14 +29,20 @@ defmodule ZkPortal do
       |> @repo.update()
   end
 
-  def update_image_in_banner(banner_id, %Image{} = image) do
+  def update_image_in_banner(banner_id, %Image{} = raw_new_img) do
     with banner when banner !== nil <- @repo.get(Banner, banner_id),
-         old_img_id <- banner.image_id,
-         {:ok, new_img} <- @repo.insert(image),
-         {:ok, _} <- update_banner(banner, %{image_id: new_img.id}),
-         {:ok, _} <- @repo.delete(%Image{id: old_img_id})
+         old_img <- @repo.get(Image, banner.image_id),
+         {:ok, new_img} <- @repo.insert(raw_new_img),
+         {:ok, _} <- update_banner(banner, %{image_id: new_img.id})
     do
-      :ok
+      # Delete the old image from DB and file but only if it existed.
+      if old_img do
+        File.rm(Image.full_path(old_img.file))
+        @repo.delete(old_img)
+        :ok
+      else
+        :ok
+      end
     else
       nil -> {:error, "Invalid banner id"}
       {:error, error} -> {:error, error}
