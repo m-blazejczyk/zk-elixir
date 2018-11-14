@@ -71,26 +71,19 @@ defmodule ZkPortalWeb.BannerController do
          {iid, _} <- Integer.parse(id),
          fwf <- random_filename_with_folder(file_type),
          full_path <- "static/upload/" <> fwf,
-         :ok <- File.rename(path, full_path)
+         :ok <- File.rename(path, full_path),
+         img <- resize_image(full_path, 200, 10000),
+         :ok <- ZkPortal.update_image_in_banner(iid, %ZkPortal.Image{file: fwf, width: img.width, height: img.height})
     do
-      IO.inspect fwf, label: "Uploaded file"
-      img = resize_image(full_path, 200, 10000)
-      db_img = ZkPortal.add_image(%ZkPortal.Image{file: fwf, width: img.width, height: img.height})
-      case ZkPortal.update_banner(%ZkPortal.Banner{id: iid}, %{image_id: db_img.id}) do
-        {:ok, _} ->
-          conn |> send_resp(:ok, "")
-        {:error, _} ->
-          conn |> send_resp(:internal_server_error, "")
-      end
       conn |> send_resp(:ok, "")
     else
-      # Problem with File.rename
+      # Problem with File.rename or database operations.
       {:error, error} ->
-        IO.inspect(error, label: "Upload problem (File.rename)")
+        IO.inspect(error, label: "Upload problem (DB or File.rename)")
         conn |> send_resp(:internal_server_error, "")
-      # All other problems
+      # All other problems.
       anything_else ->
-        IO.inspect anything_else, label: "Upload problem"
+        IO.inspect anything_else, label: "Upload problem (other)"
         conn |> send_resp(:bad_request, "")
     end
   end
