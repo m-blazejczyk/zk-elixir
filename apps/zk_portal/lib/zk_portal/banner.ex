@@ -1,14 +1,3 @@
-# mysql> desc Bannery;
-# +-----------+---------------+-----+-----+------+----------------+
-# |        Id |       int(11) |  NO | PRI | NULL | auto_increment |
-# |  IsSilent |    tinyint(4) |  NO |     |    0 |                |
-# | StartDate |          date | YES |     | NULL |                |
-# |   EndDate |          date | YES |     | NULL |                |
-# |       Url | varchar(1024) | YES |     | NULL |                |
-# |    Weight |   smallint(6) |  NO |     |   10 |                |
-# | ObrazekId |       int(11) | YES |     | NULL |                |
-# +-----------+---------------+-----+-----+------+----------------+
-
 defmodule ZkPortal.Banner do
   use Ecto.Schema
 
@@ -26,7 +15,7 @@ defmodule ZkPortal.Banner do
 
   def changeset(item, params \\ %{}) do
     item
-      |> cast(params, [:is_silent, :start_date, :end_date, :url, :weight])
+      |> cast(params, [:is_silent, :start_date, :end_date, :url, :weight, :image_id])
       |> validate_length(:url, max: 1024)
       |> validate_number(:weight, greater_than: 0)
   end

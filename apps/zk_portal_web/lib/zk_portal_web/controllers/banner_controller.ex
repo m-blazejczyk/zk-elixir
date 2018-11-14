@@ -70,10 +70,18 @@ defmodule ZkPortalWeb.BannerController do
          {:ok, file_type} <- verify_file_type(content_type),
          {iid, _} <- Integer.parse(id),
          fwf <- random_filename_with_folder(file_type),
-         :ok <- File.rename(path, fwf)
+         full_path <- "static/upload/" <> fwf,
+         :ok <- File.rename(path, full_path)
     do
       IO.inspect fwf, label: "Uploaded file"
-      img = resize_image(fwf, 200, 10000)
+      img = resize_image(full_path, 200, 10000)
+      db_img = ZkPortal.add_image(%ZkPortal.Image{file: fwf, width: img.width, height: img.height})
+      case ZkPortal.update_banner(%ZkPortal.Banner{id: iid}, %{image_id: db_img.id}) do
+        {:ok, _} ->
+          conn |> send_resp(:ok, "")
+        {:error, _} ->
+          conn |> send_resp(:internal_server_error, "")
+      end
       conn |> send_resp(:ok, "")
     else
       # Problem with File.rename
@@ -102,7 +110,7 @@ defmodule ZkPortalWeb.BannerController do
     <<folder_byte, filename_bytes :: binary>> = :crypto.strong_rand_bytes(20)
     filename = filename_bytes |> Base.url_encode64(padding: false)
     folder = folder_byte |> div(16) |> Integer.to_string(16) |> String.downcase
-    "static/upload/" <> folder <> "/" <> filename <> (if file_type == :png, do: ".png", else: ".jpg")
+    folder <> "/" <> filename <> (if file_type == :png, do: ".png", else: ".jpg")
   end
 
   # Return Mogrify.Image with 'width' and 'height' set.

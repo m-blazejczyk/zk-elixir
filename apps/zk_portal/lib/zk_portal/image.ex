@@ -1,19 +1,21 @@
-# mysql> desc Obrazki;
-# +-----------+-------------+----+-----+------+----------------+
-# |        Id |     int(11) | NO | PRI | NULL | auto_increment |
-# |      Plik | varchar(30) | NO |     | NULL |                |
-# | Szerokosc |     int(11) | NO |     | NULL |                |
-# |  Wysokosc |     int(11) | NO |     | NULL |                |
-# +-----------+-------------+----+-----+------+----------------+
-
 defmodule ZkPortal.Image do
-    use Ecto.Schema
+  use Ecto.Schema
 
-    schema "images" do
-        field :file, :string, null: false, size: 40
-        field :width, :integer, null: false
-        field :height, :integer, null: false
-        has_one :banner, ZkPortal.Banner
-        timestamps()
-    end
+  import Ecto.Changeset
+
+  schema "images" do
+    field :file, :string, null: false, size: 100
+    field :width, :integer, null: false
+    field :height, :integer, null: false
+    has_one :banner, ZkPortal.Banner
+    timestamps()
+  end
+
+  def changeset(item, params \\ %{}) do
+    item
+      |> cast(params, [:file, :width, :height])
+      |> validate_length(:file, max: 100)
+      |> validate_number(:width, greater_than: 0, less_than: 2000)
+      |> validate_number(:height, greater_than: 0, less_than: 2000)
+  end
 end

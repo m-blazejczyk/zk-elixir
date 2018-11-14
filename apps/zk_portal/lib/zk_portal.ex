@@ -28,4 +28,8 @@ defmodule ZkPortal do
       |> Banner.changeset(updates)
       |> @repo.update()
   end
+
+  def add_image(%Image{} = image) do
+    @repo.insert! image
+  end
 end
