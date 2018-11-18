@@ -7,6 +7,13 @@ defmodule ZkPortalWeb.BannerView do
   def render("banner.new.json", %{banner: banner}) do
     banner_json(banner)
   end
+  def render("upload.success.json", %{image: image}) do
+    %{
+      file: image.file,
+      height: image.height,
+      width: image.width
+    }
+  end
 
   defp banner_json(banner) do
     Map.merge(

@@ -73,9 +73,10 @@ defmodule ZkPortalWeb.BannerController do
          full_path <- ZkPortal.Image.full_path(fwf),
          :ok <- File.rename(path, full_path),
          img <- resize_image(full_path, 200, 10000),
-         :ok <- ZkPortal.update_image_in_banner(iid, %ZkPortal.Image{file: fwf, width: img.width, height: img.height})
+         img_db <- %ZkPortal.Image{file: fwf, width: img.width, height: img.height},
+         :ok <- ZkPortal.update_image_in_banner(iid, img_db)
     do
-      conn |> send_resp(:ok, "")
+      render conn, "upload.success.json", image: img_db
     else
       # Problem with File.rename or database operations.
       {:error, error} ->
