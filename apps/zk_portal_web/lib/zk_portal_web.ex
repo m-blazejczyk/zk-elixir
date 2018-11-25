@@ -22,7 +22,6 @@ defmodule ZkPortalWeb do
       use Phoenix.Controller, namespace: ZkPortalWeb
       import Plug.Conn
       import ZkPortalWeb.Router.Helpers
-      import ZkPortalWeb.Gettext
     end
   end
 
@@ -35,8 +34,6 @@ defmodule ZkPortalWeb do
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
 
       import ZkPortalWeb.Router.Helpers
-      import ZkPortalWeb.ErrorHelpers
-      import ZkPortalWeb.Gettext
     end
   end
 
@@ -45,13 +42,6 @@ defmodule ZkPortalWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
-    end
-  end
-
-  def channel do
-    quote do
-      use Phoenix.Channel
-      import ZkPortalWeb.Gettext
     end
   end
 

@@ -11,7 +11,7 @@ defmodule ZkPortalWeb.Mixfile do
       lockfile: "../../mix.lock",
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
+      compilers: [:phoenix] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
       deps: deps()
@@ -40,7 +40,6 @@ defmodule ZkPortalWeb.Mixfile do
       {:phoenix, "~> 1.3.4"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
-      {:gettext, "~> 0.11"},
       {:zk_portal, in_umbrella: true},
       {:cowboy, "~> 1.0"},
       {:cors_plug, "~> 1.5"},
