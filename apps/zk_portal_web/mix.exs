@@ -42,6 +42,7 @@ defmodule ZkPortalWeb.Mixfile do
       {:phoenix_ecto, "~> 3.2"},
       {:zk_portal, in_umbrella: true},
       {:cowboy, "~> 1.0"},
+      {:plug_cowboy, "~> 1.0"},
       {:cors_plug, "~> 1.5"},
       {:params, "~> 2.0"},
       {:mogrify, "~> 0.6"}
