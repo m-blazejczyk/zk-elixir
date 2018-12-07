@@ -9,13 +9,13 @@ defmodule ZkPortalWeb.Router do
     plug ZkPortalWeb.LoginCheckPlug
   end
 
-  scope "/auth/login", ZkPortalWeb do
+  scope "/api/auth/login", ZkPortalWeb do
     pipe_through :api
 
     post "/", LoginController, :login
   end
 
-  scope "/", ZkPortalWeb do
+  scope "/api", ZkPortalWeb do
     pipe_through [:api, :login_check]
 
     delete "/banners/:id", BannerController, :delete
