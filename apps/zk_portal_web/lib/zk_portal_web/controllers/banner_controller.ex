@@ -2,6 +2,8 @@ defmodule ZkPortalWeb.BannerController do
   use ZkPortalWeb, :controller
   use Params
 
+  require Logger
+
   import Plug.Conn;
 
   def all(conn, _params) do

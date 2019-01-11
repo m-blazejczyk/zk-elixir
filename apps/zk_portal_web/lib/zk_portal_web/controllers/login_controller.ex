@@ -1,6 +1,8 @@
 defmodule ZkPortalWeb.LoginController do
   use ZkPortalWeb, :controller
 
+  require Logger;
+
   alias ZkPortalWeb.LoginInfo;
   alias ZkPortalWeb.LoginRegistry;
 
