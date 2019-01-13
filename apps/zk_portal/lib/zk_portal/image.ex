@@ -19,14 +19,9 @@ defmodule ZkPortal.Image do
       |> validate_number(:height, greater_than: 0, less_than: 2000)
   end
 
-  def full_path(image_or_path) do
-    case image_or_path do
-      %ZkPortal.Image{file: file} ->
-        "static/upload/" <> file
-      file_str when is_bitstring(file_str) ->
-        "static/upload/" <> file_str
-      _ ->
-        {:error, "Invalid argument to full_path"}
-    end
-  end
+  def full_path(%ZkPortal.Image{file: file}), do: upload_root() <> file
+  def full_path(file_str) when is_bitstring(file_str), do: upload_root() <> file_str
+  def full_path(_), do: {:error, "Invalid argument to full_path"}
+
+  defp upload_root(), do: System.get_env("ZK_UPLOAD")
 end
