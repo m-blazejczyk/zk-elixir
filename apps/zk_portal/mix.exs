@@ -37,7 +37,7 @@ defmodule ZkPortal.Mixfile do
   defp deps do
     [
       {:mariaex, ">= 0.0.0"},
-      {:ecto, "~> 2.1"}
+      {:ecto_sql, "~> 3.0"}
     ]
   end
 
