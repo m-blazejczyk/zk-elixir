@@ -4,33 +4,40 @@ defmodule ZkPortalWeb.BannerController do
 
   require Logger
 
-  import Plug.Conn;
+  import Plug.Conn
 
   def all(conn, _params) do
     banners = ZkPortal.list_banners
+    Logger.info "Returning all #{length(banners)} banner(s) to user #{conn.assigns.user.userName}"
     render conn, "banners.all.json", banners: banners
   end
 
   def new(conn, _params) do
     banner = ZkPortal.new_banner
+    Logger.info "User #{conn.assigns.user.userName} created a new banner"
     render conn, "banner.new.json", banner: banner
   end
 
   # See https://hexdocs.pm/plug/Plug.Conn.Status.html
   def delete(conn, %{"id" => id}) do
+    Logger.info "User #{conn.assigns.user.userName} tries deleting the banner with id #{id}..."
     case Integer.parse(id) do
       {iid, _} ->
         case ZkPortal.delete_banner(%ZkPortal.Banner{id: iid}) do
           {:ok, _} ->
+            Logger.info "...and succeeds"
             conn |> send_resp(:ok, "")
-          {:error, _} ->
+          {:error, err} ->
+            Logger.error "...and fails due to #{inspect err}"
             conn |> send_resp(:bad_request, "")
         end        
       :error ->
+        Logger.error "...and fails due to invalid id"
         conn |> send_resp(:bad_request, "")
     end
   end
   def delete(conn, _) do
+    Logger.info "User #{conn.assigns.user.userName} tries deleting a banner but fails due to id not provided"
     conn |> send_resp(:bad_request, "")
   end
 
@@ -45,16 +52,20 @@ defmodule ZkPortalWeb.BannerController do
   }
 
   def update(conn, params) do
+    Logger.info "User #{conn.assigns.user.userName} tries updating a banner with #{inspect params}..."
     changeset = update_params(params)
     if changeset.valid? do
       validated_params = Params.to_map changeset
       case ZkPortal.update_banner(%ZkPortal.Banner{id: validated_params.id}, validated_params) do
         {:ok, _} ->
+          Logger.info "...and succeeds"
           conn |> send_resp(:ok, "")
-        {:error, _} ->
+        {:error, err} ->
+          Logger.error "...and fails due to #{inspect err}"
           conn |> send_resp(:bad_request, "")
       end
     else
+      Logger.error "...and fails in validation phase"
       conn |> send_resp(:bad_request, "")
     end
   end
@@ -68,6 +79,7 @@ defmodule ZkPortalWeb.BannerController do
   #   "id" => "1"
   # }
   def upload(conn, %{"id" => id, "SelectedFile" => upload}) do
+    Logger.info "User #{conn.assigns.user.userName} tries uploading an image for banner with id #{id}..."
     with %Plug.Upload{content_type: content_type, path: path} <- upload,
          {:ok, file_type} <- verify_file_type(content_type),
          {iid, _} <- Integer.parse(id),
@@ -78,19 +90,21 @@ defmodule ZkPortalWeb.BannerController do
          img_db <- %ZkPortal.Image{file: fwf, width: img.width, height: img.height},
          :ok <- ZkPortal.update_image_in_banner(iid, img_db)
     do
+      Logger.info "...and succeeds; file = #{fwf}"
       render conn, "upload.success.json", image: img_db
     else
       # Problem with File.rename or database operations.
       {:error, error} ->
-        IO.inspect(error, label: "Upload problem (DB or File.rename)")
+        Logger.error "...and fails due to #{inspect error}"
         conn |> send_resp(:internal_server_error, "")
       # All other problems.
       anything_else ->
-        IO.inspect anything_else, label: "Upload problem (other)"
+        Logger.error "...and fails due to #{inspect anything_else}"
         conn |> send_resp(:bad_request, "")
     end
   end
   def upload(conn, _) do
+    Logger.info "User #{conn.assigns.user.userName} tries uploading an image for a banner but the request is invalid"
     conn |> send_resp(:bad_request, "")
   end
 

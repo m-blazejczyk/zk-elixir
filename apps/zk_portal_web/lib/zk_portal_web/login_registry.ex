@@ -1,6 +1,8 @@
 defmodule ZkPortalWeb.LoginRegistry do
   use GenServer
 
+  require Logger;
+
   ## Client API
 
   def start_link(opts) do
@@ -27,9 +29,11 @@ defmodule ZkPortalWeb.LoginRegistry do
       case old_data do
         {old_user, _login_time} ->
           # The user has previously logged in.  Update the expiration time.
+          Logger.info "User #{user.userName} already logged in; updating expiration time"
           {old_data, {old_user, Date.utc_today()}}
         nil ->
           # Add the user to the registry.
+          Logger.info "Adding user #{user.userName} to registry"
           {old_data, {user, Date.utc_today()}}
       end
     end )
@@ -40,11 +44,14 @@ defmodule ZkPortalWeb.LoginRegistry do
     case Map.fetch(registry, token) do
       {:ok, {user, login_time}} ->
         if Date.diff(Date.utc_today(), login_time) < 14 do
+          Logger.debug "Auth request for user #{user.userName}: session OK"
           {:reply, {:ok, user}, registry}
         else
+          Logger.info "Auth request for user #{user.userName}: session expired"
           {:reply, :error, registry |> Map.delete(token)}
         end
       _ ->
+        Logger.info "Auth request: unknown token"
         {:reply, :error, registry}
     end
   end
