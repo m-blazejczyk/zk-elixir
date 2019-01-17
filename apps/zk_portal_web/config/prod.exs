@@ -1,5 +1,13 @@
 use Mix.Config
 
+# tell logger to load a LoggerFileBackend processes
+config :logger,
+  backends: [{LoggerFileBackend, :zk_log}]
+
+config :logger, :zk_log,
+  path: System.get_env("ZK_LOG_FILE"),
+  level: :info
+
 # For production, we often load configuration from external
 # sources, such as your system environment. For this reason,
 # you won't find the :http configuration below, but set inside

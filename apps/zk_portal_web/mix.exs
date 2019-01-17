@@ -46,7 +46,8 @@ defmodule ZkPortalWeb.Mixfile do
       {:plug, "~> 1.7"},
       {:cors_plug, "~> 1.5"},
       {:params, "~> 2.1.1"},
-      {:mogrify, "~> 0.6"}
+      {:mogrify, "~> 0.6"},
+      {:logger_file_backend, "~> 0.0.10"}
     ]
   end
 
