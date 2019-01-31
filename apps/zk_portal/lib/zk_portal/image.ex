@@ -7,7 +7,12 @@ defmodule ZkPortal.Image do
     field :file, :string, null: false, size: 100
     field :width, :integer, null: false
     field :height, :integer, null: false
+
     has_one :banner, ZkPortal.Banner
+    has_one :image_big, ZkPortal.Image
+    has_one :image_medium, ZkPortal.Image
+    has_one :image_small, ZkPortal.Image
+
     timestamps()
   end
 
