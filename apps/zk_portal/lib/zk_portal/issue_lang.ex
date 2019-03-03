@@ -6,6 +6,7 @@ defmodule ZkPortal.IssueLang do
   schema "issues_lang" do
 
     field :is_published, :boolean, null: false, default: false
+    field :has_toc, :boolean, null: false, default: false
     field :pub_date, :string, size: 30
     field :topic, :string, size: 100
     field :editorial, :string, size: 2000
@@ -19,7 +20,7 @@ defmodule ZkPortal.IssueLang do
 
   def changeset(item, params \\ %{}) do
     item
-      |> cast(params, [:pub_date, :topic, :editorial, :editorial_sig])
+      |> cast(params, [:is_published, :has_toc, :pub_date, :topic, :editorial, :editorial_sig])
       |> validate_length(:pub_date, max: 30)
       |> validate_length(:topic, max: 100)
       |> validate_length(:editorial, max: 2000)
