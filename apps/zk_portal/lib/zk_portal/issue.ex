@@ -7,12 +7,12 @@ defmodule ZkPortal.Issue do
     field :availability, :integer, null: false, default: 1
     field :price, :string, null: false, size: 10, default: "??"
 
-    belongs_to :issue_pl, ZkPortal.IssueLang
-    belongs_to :issue_en, ZkPortal.IssueLang
+    belongs_to :issue_pl, ZkPortal.IssueLang, foreign_key: :issue_pl_id
+    belongs_to :issue_en, ZkPortal.IssueLang, foreign_key: :issue_en_id
     
-    belongs_to :image_big, ZkPortal.Image
-    belongs_to :image_medium, ZkPortal.Image
-    belongs_to :image_small, ZkPortal.Image
+    belongs_to :image_big, ZkPortal.Image, foreign_key: :image_big_id
+    belongs_to :image_medium, ZkPortal.Image, foreign_key: :image_medium_id
+    belongs_to :image_small, ZkPortal.Image, foreign_key: :image_small_id
 
     timestamps()
   end

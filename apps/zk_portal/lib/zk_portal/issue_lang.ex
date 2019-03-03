@@ -12,8 +12,8 @@ defmodule ZkPortal.IssueLang do
     field :editorial, :string, size: 2000
     field :editorial_sig, :string, size: 200
 
-    has_one :issue_pl, ZkPortal.Issue
-    has_one :issue_en, ZkPortal.Issue
+    has_one :issue_pl, ZkPortal.Issue, foreign_key: :issue_pl_id
+    has_one :issue_en, ZkPortal.Issue, foreign_key: :issue_en_id
 
     timestamps()
   end

@@ -9,9 +9,10 @@ defmodule ZkPortal.Image do
     field :height, :integer, null: false
 
     has_one :banner, ZkPortal.Banner
-    has_one :image_big, ZkPortal.Image
-    has_one :image_medium, ZkPortal.Image
-    has_one :image_small, ZkPortal.Image
+
+    has_one :image_big, ZkPortal.Issue, foreign_key: :image_big_id
+    has_one :image_medium, ZkPortal.Issue, foreign_key: :image_medium_id
+    has_one :image_small, ZkPortal.Issue, foreign_key: :image_small_id
 
     timestamps()
   end
