@@ -68,7 +68,6 @@ defmodule ZkPortal do
       issue = %Issue{issue_pl: lang_pl, issue_en: lang_en}
       @repo.insert!(issue)
     else
-      # Check this!!!!
       {:error, error} -> {:error, error}
     end
   end
