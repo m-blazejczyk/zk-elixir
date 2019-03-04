@@ -10,9 +10,14 @@ defmodule ZkPortal do
 
   alias ZkPortal.Banner
   alias ZkPortal.Image
+  alias ZkPortal.Issue
+  alias ZkPortal.IssueLang
 
   @repo ZkPortal.Repo
 
+  ###################################################################
+  # BANNERS
+  ###################################################################
   def list_banners do
     @repo.all(from Banner, preload: :image)
   end
@@ -47,5 +52,36 @@ defmodule ZkPortal do
       nil -> {:error, "Invalid banner id"}
       {:error, error} -> {:error, error}
     end
+  end
+
+  ###################################################################
+  # ISSUES
+  ###################################################################
+  def list_issues do
+    @repo.all(from Issue, preload: [:issue_pl, :issue_en, :image_small])
+  end
+
+  def new_issue do
+    with {:ok, lang_pl} <- @repo.insert(%IssueLang{}),
+         {:ok, lang_en} <- @repo.insert(%IssueLang{})
+    do
+      issue = %Issue{issue_pl: lang_pl, issue_en: lang_en}
+      @repo.insert!(issue)
+    else
+      # Check this!!!!
+      {:error, error} -> {:error, error}
+    end
+  end
+
+  def update_issue(%Issue{} = issue, updates) do
+    issue
+      |> Issue.changeset(updates)
+      |> @repo.update()
+  end
+
+  def update_issue_lang(%IssueLang{} = issue_lang, updates) do
+    issue_lang
+      |> IssueLang.changeset(updates)
+      |> @repo.update()
   end
 end

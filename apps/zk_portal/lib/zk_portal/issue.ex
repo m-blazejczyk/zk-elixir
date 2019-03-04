@@ -19,7 +19,7 @@ defmodule ZkPortal.Issue do
 
   def changeset(item, params \\ %{}) do
     item
-      |> cast(params, [:availability, :price, :issue_pl_id, :issue_en_id,
+      |> cast(params, [:availability, :price,
                        :image_big_id, :image_medium_id, :image_small_id])
       |> validate_length(:price, max: 10)
       |> validate_number(:availability, greater_than: 0)
