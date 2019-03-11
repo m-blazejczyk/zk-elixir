@@ -4,7 +4,7 @@ defmodule ZkPortalWeb.BannerView do
   alias ZkPortalWeb.ImageView;
 
   def render("banners.all.json", %{banners: banners}) do
-    Enum.map(banners, &ImageView.as_json/1)
+    Enum.map(banners, &banner_json/1)
   end
   def render("banner.new.json", %{banner: banner}) do
     banner_json(banner)
