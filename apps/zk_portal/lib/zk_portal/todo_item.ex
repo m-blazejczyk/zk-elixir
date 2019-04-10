@@ -4,7 +4,7 @@ defmodule ZkPortal.TodoItem do
   import Ecto.Changeset
 
   schema "todo_items" do
-    field :name, :string, null: false, size: 200, default: "Nowa rzecz"
+    field :name, :string, null: false, size: 200, default: "Nowe zadanie"
     field :priority, :integer, null: false, default: 1
     field :status, :integer, null: false, default: 0
     field :order, :integer, null: false
