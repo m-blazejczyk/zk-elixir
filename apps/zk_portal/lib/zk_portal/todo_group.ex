@@ -8,7 +8,7 @@ defmodule ZkPortal.TodoGroup do
     field :order, :integer, null: false
     field :is_archived, :boolean, null: false, default: false
 
-    has_many :todo_item, ZkPortal.TodoItem
+    has_many :todo_items, ZkPortal.TodoItem
 
     timestamps()
   end

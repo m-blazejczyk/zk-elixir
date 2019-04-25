@@ -21,6 +21,7 @@ defmodule ZkPortal.TodoItem do
       |> validate_number(:priority, greater_than_or_equal_to: 0, less_than_or_equal_to: 3)
       |> validate_number(:status, greater_than_or_equal_to: 0, less_than_or_equal_to: 3)
       |> validate_number(:order, greater_than: 0)
+      |> foreign_key_constraint(:todo_group_id)
   end
 
   def priority_text(0), do: "Dzień-dwa"

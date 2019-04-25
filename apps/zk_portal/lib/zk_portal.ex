@@ -12,6 +12,8 @@ defmodule ZkPortal do
   alias ZkPortal.Image
   alias ZkPortal.Issue
   alias ZkPortal.IssueLang
+  alias ZkPortal.TodoItem
+  alias ZkPortal.TodoGroup
 
   @repo ZkPortal.Repo
 
@@ -83,4 +85,17 @@ defmodule ZkPortal do
       |> IssueLang.changeset(updates)
       |> @repo.update()
   end
+
+  ###################################################################
+  # TODOS
+  ###################################################################
+  def list_todos do
+    q = from g in TodoGroup,
+      join: i in assoc(g, :todo_items),
+      order_by: [g.order], 
+      where: g.is_archived == false,
+      preload: [todo_items: i]
+    @repo.all(q)
+  end
+
 end
