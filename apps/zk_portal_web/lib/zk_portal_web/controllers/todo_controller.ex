@@ -9,6 +9,8 @@ defmodule ZkPortalWeb.TodoController do
   def all(conn, _params) do
     todos = ZkPortal.list_todos
     Logger.info "Returning all #{length(todos)} todos(s) to user #{conn.assigns.user.userName}"
-    render conn, "todos.all.json", todos: todos
+    conn
+      |> put_view(ZkPortalWeb.TodoGroupView)
+      |> render("todos.all.json", todos: todos)
   end
 end
