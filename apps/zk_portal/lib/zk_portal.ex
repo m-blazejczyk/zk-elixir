@@ -38,7 +38,7 @@ defmodule ZkPortal do
 
   def update_image_in_banner(banner_id, %Image{} = raw_new_img) do
     with banner when banner !== nil <- @repo.get(Banner, banner_id),
-         old_img <- @repo.get(Image, banner.image_id),
+         old_img <- get_image(banner.image_id),
          {:ok, new_img} <- @repo.insert(raw_new_img),
          {:ok, _} <- update_banner(banner, %{image_id: new_img.id})
     do
@@ -55,6 +55,10 @@ defmodule ZkPortal do
       {:error, error} -> {:error, error}
     end
   end
+
+  # Function necessary to prevent ArgumentError when image_id is nil.
+  defp get_image(nil), do: nil
+  defp get_image(image_id), do: @repo.get(Image, image_id)
 
   ###################################################################
   # ISSUES
