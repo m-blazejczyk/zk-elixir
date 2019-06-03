@@ -56,7 +56,11 @@ defmodule ZkPortalWeb.BannerController do
     changeset = update_params(params)
     if changeset.valid? do
       validated_params = Params.to_map changeset
-      case ZkPortal.update_banner(%ZkPortal.Banner{id: validated_params.id}, validated_params) do
+      banner = %ZkPortal.Banner{
+        id: validated_params.id,
+        is_silent: fix_is_silent(validated_params)
+      }
+      case ZkPortal.update_banner(banner, validated_params) do
         {:ok, _} ->
           Logger.info "...and succeeds"
           conn |> send_resp(:ok, "")
@@ -69,6 +73,13 @@ defmodule ZkPortalWeb.BannerController do
       conn |> send_resp(:bad_request, "")
     end
   end
+
+  # This function is needed so that turning off is_silent actually works.
+  # Without it, considering that is_silent is set to false by default when a Banner is created,
+  # setting it to false by the web client is ignored by the changeset mechanism.
+  defp fix_is_silent(%{"is_silent" => "true"}), do: "false"
+  defp fix_is_silent(%{"is_silent" => "false"}), do: "true"
+  defp fix_is_silent(params), do: "false"
 
   # %{
   #   "SelectedFile" => %Plug.Upload{
