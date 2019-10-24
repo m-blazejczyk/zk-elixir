@@ -36,7 +36,7 @@ defmodule ZkPortal.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:mariaex, ">= 0.0.0"},
+      {:myxql, ">= 0.0.0"},
       {:ecto_sql, "~> 3.0"}
     ]
   end
