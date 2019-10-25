@@ -78,6 +78,9 @@ defmodule ZkPortal do
     end
   end
 
+  # This is the least important feature for now.
+  def delete_issue(%Issue{} = issue), do: :not_implemented
+  
   def update_issue(%Issue{} = issue, updates) do
     issue
       |> Issue.changeset(updates)

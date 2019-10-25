@@ -26,8 +26,10 @@ defmodule ZkPortalWeb.Router do
 
     get "/todos", TodoController, :all
 
+    delete "/issues/:id", IssueController, :delete
     post "/issues/new", IssueController, :new
     get "/issues", IssueController, :all
-    post "/issues/:id/update", IssueController, :update
+    post "/issues/:id/update", IssueController, :update_issue
+    post "/issues-lang/:id/update", IssueController, :update_issue_lang
   end
 end
