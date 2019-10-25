@@ -79,7 +79,8 @@ defmodule ZkPortal do
   end
 
   # This is the least important feature for now.
-  def delete_issue(%Issue{} = issue), do: :not_implemented
+  # We need code that will only delete unpublished issues.
+  def delete_issue(_issue), do: {:error, "not implemented"}
   
   def update_issue(%Issue{} = issue, updates) do
     issue
