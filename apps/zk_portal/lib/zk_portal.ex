@@ -12,7 +12,6 @@ defmodule ZkPortal do
   alias ZkPortal.Image
   alias ZkPortal.Issue
   alias ZkPortal.IssueLang
-  alias ZkPortal.TodoItem
   alias ZkPortal.TodoGroup
 
   @repo ZkPortal.Repo
