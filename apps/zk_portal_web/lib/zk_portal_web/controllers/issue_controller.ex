@@ -4,8 +4,6 @@ defmodule ZkPortalWeb.IssueController do
 
   require Logger
 
-  import Plug.Conn
-
   def all(conn, _params) do
     issues = ZkPortal.list_issues
     Logger.info "Returning all #{length(issues)} issue(s) to user #{conn.assigns.user.userName}"

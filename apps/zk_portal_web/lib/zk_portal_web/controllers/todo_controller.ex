@@ -4,8 +4,6 @@ defmodule ZkPortalWeb.TodoController do
 
   require Logger
 
-  import Plug.Conn
-
   def all(conn, _params) do
     todos = ZkPortal.list_todos
     Logger.info "Returning all #{length(todos)} todos(s) to user #{conn.assigns.user.userName}"

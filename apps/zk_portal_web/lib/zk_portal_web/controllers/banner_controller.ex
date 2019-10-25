@@ -79,7 +79,7 @@ defmodule ZkPortalWeb.BannerController do
   # setting it to false by the web client is ignored by the changeset mechanism.
   defp fix_is_silent(%{"is_silent" => "true"}), do: "false"
   defp fix_is_silent(%{"is_silent" => "false"}), do: "true"
-  defp fix_is_silent(params), do: "false"
+  defp fix_is_silent(_params), do: "false"
 
   # %{
   #   "SelectedFile" => %Plug.Upload{
