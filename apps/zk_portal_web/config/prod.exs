@@ -6,7 +6,8 @@ config :logger,
 
 config :logger, :zk_log,
   path: System.get_env("ZK_LOG_FILE"),
-  level: :info
+  level: :info,
+  format: "$date $time $metadata[$level] $message\n"
 
 # For production, we often load configuration from external
 # sources, such as your system environment. For this reason,
