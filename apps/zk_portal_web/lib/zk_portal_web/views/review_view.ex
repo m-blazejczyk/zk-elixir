@@ -8,6 +8,7 @@ defmodule ZkPortalWeb.ReviewView do
   defp review_json(review) do
     %{
       id: review.id,
+      page_name: review.page_name,
       title: review.title,
       author: review.author,
       pub_date: review.pub_date,

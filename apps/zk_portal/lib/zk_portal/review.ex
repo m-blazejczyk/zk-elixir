@@ -4,6 +4,7 @@ defmodule ZkPortal.Review do
   import Ecto.Changeset
 
   schema "reviews" do
+    field :page_name, :string, size: 50, null: false
     field :title, :string, size: 200, null: false
     field :author, :string, size: 100, null: false
     field :pub_date, :string, size: 30, null: false
@@ -20,8 +21,11 @@ defmodule ZkPortal.Review do
 
   def changeset(item, params \\ %{}) do
     item
-      |> cast(params, [:title, :author, :pub_date, :comics_author, :comics_title,
+      |> cast(params, [:page_name, :title, :author, :pub_date, :comics_author, :comics_title,
                        :publisher, :publisher_url, :review, :info, :buy_urls])
+      |> validate_required([:page_name, :title, :author, :pub_date, :comics_author, :comics_title,
+                           :publisher, :review, :info, :buy_urls])
+      |> validate_length(:page_name, max: 50)
       |> validate_length(:title, max: 200)
       |> validate_length(:author, max: 100)
       |> validate_length(:pub_date, max: 30)
