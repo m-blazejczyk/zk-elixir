@@ -13,6 +13,7 @@ defmodule ZkPortal do
   alias ZkPortal.Issue
   alias ZkPortal.IssueLang
   alias ZkPortal.TodoGroup
+  alias ZkPortal.Review
 
   @repo ZkPortal.Repo
 
@@ -90,6 +91,25 @@ defmodule ZkPortal do
   def update_issue_lang(%IssueLang{} = issue_lang, updates) do
     issue_lang
       |> IssueLang.changeset(updates)
+      |> @repo.update()
+  end
+
+  ###################################################################
+  # REVIEWS
+  ###################################################################
+  def list_reviews do
+    @repo.all(from Review)
+  end
+
+  def insert_review(%Review{} = review, updates) do
+    review
+      |> Review.changeset(updates)
+      |> @repo.insert()
+  end
+
+  def update_review(%Review{} = review, updates) do
+    review
+      |> Review.changeset(updates)
       |> @repo.update()
   end
 

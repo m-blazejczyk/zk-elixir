@@ -31,5 +31,10 @@ defmodule ZkPortalWeb.Router do
     get "/issues", IssueController, :all
     post "/issues/:id/update", IssueController, :update_issue
     post "/issues-lang/:id/update", IssueController, :update_issue_lang
+
+    post "/reviews/insert", ReviewController, :insert
+    get "/reviews", ReviewController, :all
+    post "/reviews/:id/update", ReviewController, :update
+    
   end
 end
