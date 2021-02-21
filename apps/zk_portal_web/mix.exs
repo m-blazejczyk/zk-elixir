@@ -37,15 +37,15 @@ defmodule ZkPortalWeb.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.0"},
-      {:phoenix_pubsub, "~> 1.0"},
+      {:phoenix, "~> 1.5"},
+      {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:jason, "~> 1.0"},
       {:zk_portal, in_umbrella: true},
       {:plug_cowboy, "~> 2.0"},
       {:plug, "~> 1.7"},
-      {:cors_plug, "~> 1.5"},
-      {:params, "~> 2.1.1"},
+      {:cors_plug, "~> 2.0"},
+      {:params, "~> 2.0"},
       {:mogrify, "~> 0.6"},
       {:logger_file_backend, "~> 0.0.10"}
     ]
