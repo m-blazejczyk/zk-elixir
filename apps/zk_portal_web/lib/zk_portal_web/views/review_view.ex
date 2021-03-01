@@ -12,13 +12,19 @@ defmodule ZkPortalWeb.ReviewView do
       title: review.title,
       author: review.author,
       pub_date: review.pub_date,
-      comics_author: review.comics_author,
-      comics_title: review.comics_title,
-      publisher: review.publisher,
-      publisher_url: review.publisher_url,
       review: review.review,
-      info: review.info,
-      buy_urls: review.buy_urls
+
+      comics_author_1: review.comics_author_1,
+      comics_title_1: review.comics_title_1,
+      publisher_1: review.publisher_1,
+      info_1: review.info_1,
+      buy_urls_1: review.buy_urls_1,
+
+      comics_author_2: review.comics_author_2,
+      comics_title_2: review.comics_title_2,
+      publisher_2: review.publisher_2,
+      info_2: review.info_2,
+      buy_urls_2: review.buy_urls_2
     }
   end
 end
